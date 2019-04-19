@@ -5,6 +5,11 @@ import requests
 import pandas as pd
 from dotenv import load_dotenv
 
+# PRINT GENRE LIST FOR USER TO SEE
+
+genre_list = ["comedy","horror","action","romantic comedy"]
+print(genre_list)
+
 # NEED TO IMPORT THE API KEYS FOR TMDB AND ROTTEN TOMATOES
 
 TMDB_API = os.environ.get("TMDB_API")
@@ -13,10 +18,35 @@ exit()
 
 request_url = "https://api.themoviedb.org/3/collection/{collection_id}?api_key=<<" + TMDB_API + ">>&language=en-US" 
 
+import http.client
+conn = http.client.HTTPSConnection("api.themoviedb.org")
+conn.request("GET", "/3/movie/550?api_key=" + TMDB_API)
+r1 = conn.getresponse()
+print(r1.status, r1.reason)
+if r1.status == 200:
+    data1 = r1.read()
+
+    # GOT THIS CODE FROM STACK OVERFLOW
+
 # CREATE USER INPUT FOR GENRE AND YEAR OF MOVIE
 
+while True:
+	genre_input = input("Enter the name of the genre you want: ")
+	if not genre_input.isalpha():
+		print("Please make sure to enter a valid genre")
+	else:
+		data = requests.get("https://api.themoviedb.org/3/collection/{collection_id}?api_key=<<" + TMDB_API + ">>&language=en-US")
 
+		if "Error" in data.text:
+			print("The stock you are looking for is not here")
+		else:
+			break
 
+request_url = f"https://api.themoviedb.org/3/collection/{collection_id}?api_key=<<" + TMDB_API + ">>&language=en-US"
+# print(request_url)
+
+response = requests.get(request_url)
+    # GOT SOME OF THIS CODE FROM THE ROBO ADVISOR PROJECT
 
 # PULL DATA FROM TMDB AND ROTTEN TOMATOES W MATCHING GENRE/YEAR
 
