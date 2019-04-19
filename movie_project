@@ -8,41 +8,39 @@ from dotenv import load_dotenv
 # PRINT GENRE LIST FOR USER TO SEE
 
 genre_list = ["comedy","horror","action","romantic comedy"]
-print(genre_list)
+print("Please choose one of the following genres " + str(genre_list))
 
 # NEED TO IMPORT THE API KEYS FOR TMDB AND ROTTEN TOMATOES
 
-TMDB_API = os.environ.get("TMDB_API")
+TMDB_API = "859ad25d111a2a5246f618512a63e567"
 
-exit()
 
-request_url = "https://api.themoviedb.org/3/collection/{collection_id}?api_key=<<" + TMDB_API + ">>&language=en-US" 
+# request_url = "https://api.themoviedb.org/3/collection/{collection_id}?api_key=" + TMDB_API + "&language=en-US" 
+request_url = "https://api.themoviedb.org/3/collection/latest?api_key=" + TMDB_API + "&language=en-US" 
 
-import http.client
-conn = http.client.HTTPSConnection("api.themoviedb.org")
-conn.request("GET", "/3/movie/550?api_key=" + TMDB_API)
-r1 = conn.getresponse()
-print(r1.status, r1.reason)
-if r1.status == 200:
-    data1 = r1.read()
-
-    # GOT THIS CODE FROM STACK OVERFLOW
 
 # CREATE USER INPUT FOR GENRE AND YEAR OF MOVIE
 
+# data = requests.get("https://api.themoviedb.org/3/collection/{collection_id}?api_key=" + TMDB_API + "&language=en-US")
+data = requests.get("https://api.themoviedb.org/3/collection/latest?api_key=" + TMDB_API + "&language=en-US")
+
+
+
 while True:
-	genre_input = input("Enter the name of the genre you want: ")
-	if not genre_input.isalpha():
-		print("Please make sure to enter a valid genre")
-	else:
-		data = requests.get("https://api.themoviedb.org/3/collection/{collection_id}?api_key=<<" + TMDB_API + ">>&language=en-US")
+    genre_input = input("Enter the name of the genre you want: ")
+    if genre_input.lower() in genre_list:
+        print(data.text)
+                
+            # GOT CODE FROM STACK OVERFLOW
+    else:
+	    print("Please make sure to enter a valid genre")
 
-		if "Error" in data.text:
-			print("The stock you are looking for is not here")
-		else:
-			break
+	    if "Error" in data.text:
+		    print("The stock you are looking for is not here")
+	    else:
+		    break
 
-request_url = f"https://api.themoviedb.org/3/collection/{collection_id}?api_key=<<" + TMDB_API + ">>&language=en-US"
+request_url = "https://api.themoviedb.org/3/collection/latest?api_key=" + TMDB_API + "&language=en-US"
 # print(request_url)
 
 response = requests.get(request_url)
@@ -53,3 +51,4 @@ response = requests.get(request_url)
 
 
 # OUTPUT THREE RECOM
+
