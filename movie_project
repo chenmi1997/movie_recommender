@@ -1,0 +1,25 @@
+import json
+import os
+
+import requests
+import pandas as pd
+from dotenv import load_dotenv
+
+# NEED TO IMPORT THE API KEYS FOR TMDB AND ROTTEN TOMATOES
+
+TMDB_API = os.environ.get("TMDB_API")
+
+exit()
+
+request_url = "https://api.themoviedb.org/3/collection/{collection_id}?api_key=<<" + TMDB_API + ">>&language=en-US" 
+
+# CREATE USER INPUT FOR GENRE AND YEAR OF MOVIE
+
+
+
+
+# PULL DATA FROM TMDB AND ROTTEN TOMATOES W MATCHING GENRE/YEAR
+
+
+
+# OUTPUT THREE RECOM
