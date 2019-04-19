@@ -7,7 +7,7 @@ from dotenv import load_dotenv
 
 # PRINT GENRE LIST FOR USER TO SEE
 
-genre_list = ["comedy","horror","action","romantic comedy"]
+genre_list = ["comedy","horror","action","romance"]
 print("Please choose one of the following genres " + str(genre_list))
 
 # NEED TO IMPORT THE API KEYS FOR TMDB AND ROTTEN TOMATOES
@@ -16,14 +16,13 @@ TMDB_API = "859ad25d111a2a5246f618512a63e567"
 
 
 # request_url = "https://api.themoviedb.org/3/collection/{collection_id}?api_key=" + TMDB_API + "&language=en-US" 
-request_url = "https://api.themoviedb.org/3/collection/latest?api_key=" + TMDB_API + "&language=en-US" 
+request_url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API
 
 
 # CREATE USER INPUT FOR GENRE AND YEAR OF MOVIE
 
 # data = requests.get("https://api.themoviedb.org/3/collection/{collection_id}?api_key=" + TMDB_API + "&language=en-US")
-data = requests.get("https://api.themoviedb.org/3/collection/latest?api_key=" + TMDB_API + "&language=en-US")
-
+data = requests.get("https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API)
 
 
 while True:
@@ -40,7 +39,7 @@ while True:
 	    else:
 		    break
 
-request_url = "https://api.themoviedb.org/3/collection/latest?api_key=" + TMDB_API + "&language=en-US"
+request_url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API
 # print(request_url)
 
 response = requests.get(request_url)
@@ -51,4 +50,5 @@ response = requests.get(request_url)
 
 
 # OUTPUT THREE RECOM
+
 
