@@ -7,30 +7,34 @@ from dotenv import load_dotenv
 
 # PRINT GENRE LIST FOR USER TO SEE
 
-genre_list = ["comedy","horror","action","romance"]
+genre_list = ["comedy","horror","action","romantic comedy"]
 print("Please choose one of the following genres " + str(genre_list))
 
 # NEED TO IMPORT THE API KEYS FOR TMDB AND ROTTEN TOMATOES
 
-TMDB_API = "859ad25d111a2a5246f618512a63e567"
-
-
-# request_url = "https://api.themoviedb.org/3/collection/{collection_id}?api_key=" + TMDB_API + "&language=en-US" 
-request_url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API
-
 
 # CREATE USER INPUT FOR GENRE AND YEAR OF MOVIE
 
-# data = requests.get("https://api.themoviedb.org/3/collection/{collection_id}?api_key=" + TMDB_API + "&language=en-US")
-data = requests.get("https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API)
+number_of_movies = 100000
+
 
 
 while True:
     genre_input = input("Enter the name of the genre you want: ")
     if genre_input.lower() in genre_list:
-        print(data.text)
+
+      for collection in range(number_of_movies):
+        data = requests.get("https://api.themoviedb.org/3/movie/" + str(collection) + "?api_key=859ad25d111a2a5246f618512a63e567")
+
+        if data.status_code == 200:
+          json_string = data.text
+          obj = json.loads(json_string)
+
+          for ele in obj['genres']:
+            if genre_input == ele['name'].lower():
+              print(obj['name'])
                 
-            # GOT CODE FROM STACK OVERFLOW
+            # GOT SOME HELP FROM A FRIEND WITH THIS CODE 
     else:
 	    print("Please make sure to enter a valid genre")
 
@@ -39,10 +43,6 @@ while True:
 	    else:
 		    break
 
-request_url = "https://api.themoviedb.org/3/movie/550?api_key=" + TMDB_API
-# print(request_url)
-
-response = requests.get(request_url)
     # GOT SOME OF THIS CODE FROM THE ROBO ADVISOR PROJECT
 
 # PULL DATA FROM TMDB AND ROTTEN TOMATOES W MATCHING GENRE/YEAR
@@ -50,5 +50,3 @@ response = requests.get(request_url)
 
 
 # OUTPUT THREE RECOM
-
-
