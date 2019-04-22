@@ -7,15 +7,16 @@ from dotenv import load_dotenv
 
 # PRINT GENRE LIST FOR USER TO SEE
 
-genre_list = ["comedy","horror","action","romantic comedy"]
-print("Please choose one of the following genres " + str(genre_list))
+genre_list = ["comedy","horror","action","romance","thriller","drama","documentary","crime","science fiction"]
+print("Please choose one of the following genres: ")
+print(str(genre_list))
 
 # NEED TO IMPORT THE API KEYS FOR TMDB AND ROTTEN TOMATOES
 
 
 # CREATE USER INPUT FOR GENRE AND YEAR OF MOVIE
 
-number_of_movies = 100000
+number_of_movies = 85000
 
 
 
@@ -32,14 +33,14 @@ while True:
 
           for ele in obj['genres']:
             if genre_input == ele['name'].lower():
-              print(obj['name'])
+              print(obj['original_title'])
                 
-            # GOT SOME HELP FROM A FRIEND WITH THIS CODE 
+            # GOT CODE FROM STACK OVERFLOW
     else:
 	    print("Please make sure to enter a valid genre")
 
 	    if "Error" in data.text:
-		    print("The stock you are looking for is not here")
+		    print("The genre you are looking for is not here")
 	    else:
 		    break
 
