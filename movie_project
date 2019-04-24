@@ -1,53 +1,55 @@
-import json
 import os
+import json
+import pprint as pp # see: https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/pprint.md
+import random
 
 import requests
-import pandas as pd
 from dotenv import load_dotenv
 
-# PRINT GENRE LIST FOR USER TO SEE
+load_dotenv()
 
-genre_list = ["comedy","horror","action","romance","thriller","drama","documentary","crime","science fiction"]
-print("Please choose one of the following genres: ")
-print(str(genre_list))
+API_KEY_V3 = os.environ.get("API_KEY_V3")
 
-# NEED TO IMPORT THE API KEYS FOR TMDB AND ROTTEN TOMATOES
+#
+# USER SELECTS GENRE
+#
 
+# inferring these from https://developers.themoviedb.org/3/genres/get-movie-list
+genre_list = ["action", "adventure", "documentary", "horror", "mystery", "science fiction"]
+print("GENRES:", genre_list)
 
-# CREATE USER INPUT FOR GENRE AND YEAR OF MOVIE
+genre_input = input("Enter the name of the genre you want: ") # input("Enter the name of the genre you want: ")
+print("SELECTED GENRE:", genre_input)
 
-number_of_movies = 85000
+# h/t: https://www.themoviedb.org/talk/59fcec1fc3a368689300071d?language=en-US
 
-
+genre_id = 85000 # todo: lookup id matching the selected genre (see genres.json or make a request to https://developers.themoviedb.org/3/genres/get-movie-list):
 
 while True:
-    genre_input = input("Enter the name of the genre you want: ")
     if genre_input.lower() in genre_list:
 
-      for collection in range(number_of_movies):
-        data = requests.get("https://api.themoviedb.org/3/movie/" + str(collection) + "?api_key=859ad25d111a2a5246f618512a63e567")
+      for collection in range(genre_id):
+        data = requests.get("https://api.themoviedb.org/3/movie/" + str(genre_id) + "?api_key={API_KEY_V3}")
 
-        if data.status_code == 200:
-          json_string = data.text
-          obj = json.loads(json_string)
+request_url = f"https://api.themoviedb.org/3/discover/movie?api_key={API_KEY_V3}&language=en-US&sort_by=popularity.desc&with_genres={genre_id}"
+# print(request_url)
+data = requests.get(request_url)
 
-          for ele in obj['genres']:
-            if genre_input == ele['name'].lower():
-              print(obj['original_title'])
-                
-            # GOT CODE FROM STACK OVERFLOW
-    else:
-	    print("Please make sure to enter a valid genre")
+if data.status_code == 200:
+    json_string = data.text
+    parsed_response = json.loads(json_string)
 
-	    if "Error" in data.text:
-		    print("The genre you are looking for is not here")
-	    else:
-		    break
+    # breakpoint()
+    # (Pdb) type(parsed_response)
+    # <class 'dict'>
+    # (Pdb) parsed_response.keys()
+    # dict_keys(['page', 'total_results', 'total_pages', 'results'])
 
-    # GOT SOME OF THIS CODE FROM THE ROBO ADVISOR PROJECT
+    matching_movies = parsed_response["results"]
 
-# PULL DATA FROM TMDB AND ROTTEN TOMATOES W MATCHING GENRE/YEAR
-
-
-
-# OUTPUT THREE RECOM
+    print(type(matching_movies))
+    print("-------------------")
+    print("MATCHING MOVIES:")
+    for matching_movie in matching_movies:
+        pp.pprint(matching_movie)
+        print("---------")
