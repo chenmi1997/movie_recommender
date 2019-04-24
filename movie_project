@@ -11,12 +11,7 @@ load_dotenv()
 API_KEY_V3 = os.environ.get("API_KEY_V3")
 
 genres = [
-
-    {
-        "id":28, 
-        "name": "Action", 
-    },
-
+    {"id": 28,"name": "Action"},
     {"id": 12,"name": "Adventure"},
     {"id": 16,"name": "Animation"},
     {"id": 35,"name": "Comedy"},
@@ -37,35 +32,47 @@ genres = [
     {"id": 37,"name": "Western"}
 ]
 
-
 #
 # USER SELECTS GENRE
 #
 
 # inferring these from https://developers.themoviedb.org/3/genres/get-movie-list
 
+genre_list = []
+
 for x in genres:
-    genre_list = x("name")
+    genre_list.append(x["name"]) 
 
 # genre_list = ["action", "adventure", "documentary", "horror", "mystery", "science fiction"]
-print("GENRES:", genre_list)
+print("GENRES:" + str(genre_list))
 
 genre_input = input("Enter the name of the genre you want: ") # input("Enter the name of the genre you want: ")
-print("SELECTED GENRE:", genre_input)
+print("SELECTED GENRE:" + genre_input)
+
+# if genre_input.lower() in genre_list:
+    
+# else:
+    # ("Please enter a valid genre")
 
 # h/t: https://www.themoviedb.org/talk/59fcec1fc3a368689300071d?language=en-US
 
-genre_id = 85000 # todo: lookup id matching the selected genre (see genres.json or make a request to https://developers.themoviedb.org/3/genres/get-movie-list):
+# for genre_input in request_url:
+        # = [p for p in genres if str(p["name"]) == str(genre_input)]
 
-while True:
-    if genre_input.lower() in genre_list:
+# genre_id = 85000 # todo: lookup id matching the selected genre (see genres.json or make a request to https://developers.themoviedb.org/3/genres/get-movie-list):
+matching_genres = [p for p in genres if str(p["name"]) == str(genre_input)]
+matching_genre = matching_genres[0]
+genre_id = matching_genre["id"]
 
-      for collection in range(genre_id):
-        data = requests.get("https://api.themoviedb.org/3/movie/" + str(genre_id) + f"?api_key={API_KEY_V3}")
+# print(genre_id)
+
+    # for collection in range(genre_id):
+    #    data = requests.get("https://api.themoviedb.org/3/movie/" + str(genre_id) + f"?api_key={API_KEY_V3}")
 
 request_url = f"https://api.themoviedb.org/3/discover/movie?api_key={API_KEY_V3}&language=en-US&sort_by=popularity.desc&with_genres={genre_id}"
 # print(request_url)
 data = requests.get(request_url)
+
 
 if data.status_code == 200:
     json_string = data.text
@@ -79,7 +86,7 @@ if data.status_code == 200:
 
     matching_movies = parsed_response["results"]
 
-    print(type(matching_movies))
+    # print(type(matching_movies))
     print("-------------------")
     print("MATCHING MOVIES:")
     for matching_movie in matching_movies:
