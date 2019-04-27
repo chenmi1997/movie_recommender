@@ -10,6 +10,8 @@ load_dotenv()
 
 API_KEY_V3 = os.environ.get("API_KEY_V3")
 
+output_length = 3
+
 genres = [
     {"id": 28,"name": "Action"},
     {"id": 12,"name": "Adventure"},
@@ -86,8 +88,17 @@ if data.status_code == 200:
     matching_movies = parsed_response["results"]
 
     # print(type(matching_movies))
+
+    movie_list = []
+
+    while len(movie_list) != output_length:
+        random_int = random.randint(0, len(movie_list) - 1)
+    if matching_movies[random_int] not in movie_list:
+        movie_list.append(matching_movies[random_int])
+
+  
     print("-------------------")
-    print("MATCHING MOVIES:")
-    for matching_movie in matching_movies:
-        pp.pprint(matching_movie)
+    print("Random " +  matching_genres[0] + " movies: ")
+    for movie in movie_list:
+        pp.pprint(movie)    
         print("---------")
