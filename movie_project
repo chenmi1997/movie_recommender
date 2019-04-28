@@ -61,10 +61,18 @@ print("SELECTED GENRE:" + genre_input)
 # for genre_input in request_url:
         # = [p for p in genres if str(p["name"]) == str(genre_input)]
 
-# genre_id = 85000 # todo: lookup id matching the selected genre (see genres.json or make a request to https://developers.themoviedb.org/3/genres/get-movie-list):
+
+# GENRE MATCHING PROCESS
 matching_genres = [p for p in genres if str(p["name"].lower()) == str(genre_input).lower()]
 matching_genre = matching_genres[0]
 genre_id = matching_genre["id"]
+
+
+# RANDOMIZATION PROCESS
+number_of_movies_available = 85000 # todo: lookup id matching the selected genre (see genres.json or make a request to https://developers.themoviedb.org/3/genres/get-movie-list):
+movie_ids = list(range(number_of_movies_available))
+random.shuffle(movie_ids) # sort randomly, which will introduce randomness into the request process. see: https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/random.md
+print("SOME RANDOM MOVIE IDS:", movie_ids[0:25])
 
 # print(genre_id)
 
@@ -91,14 +99,19 @@ if data.status_code == 200:
 
     movie_list = []
 
+
+    # ENSURES THERE ARE ONLY 3 OUPUTS
+
     while len(movie_list) != output_length:
-        random_int = random.randint(0, len(movie_list) - 1)
-    if matching_movies[random_int] not in movie_list:
-        movie_list.append(matching_movies[random_int])
+        random_int = random.randint(0, len(matching_movies) - 1)
+        if matching_movies[random_int] not in movie_list:
+            movie_list.append(matching_movies[random_int])
 
   
+    # PRINTING PROCESS OF THE MOVIES 
+
     print("-------------------")
-    print("Random " +  matching_genres[0] + " movies: ")
+    print("Random " +  str(matching_genres[0]) + " movies: ")
     for movie in movie_list:
         pp.pprint(movie)    
         print("---------")
