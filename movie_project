@@ -2,6 +2,7 @@ import os
 import json
 import pprint as pp # see: https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/pprint.md
 import random
+import pytest
 
 import requests
 from dotenv import load_dotenv
@@ -68,50 +69,53 @@ matching_genre = matching_genres[0]
 genre_id = matching_genre["id"]
 
 
-# RANDOMIZATION PROCESS
-number_of_movies_available = 85000 # todo: lookup id matching the selected genre (see genres.json or make a request to https://developers.themoviedb.org/3/genres/get-movie-list):
-movie_ids = list(range(number_of_movies_available))
-random.shuffle(movie_ids) # sort randomly, which will introduce randomness into the request process. see: https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/random.md
-print("SOME RANDOM MOVIE IDS:", movie_ids[0:25])
 
-# print(genre_id)
+    # RANDOMIZATION PROCESS
+#number_of_movies_available = 85000 # todo: lookup id matching the selected genre (see genres.json or make a request to https://developers.themoviedb.org/3/genres/get-movie-list):
+#movie_ids = list(range(number_of_movies_available))
+#random.shuffle(movie_ids) # sort randomly, which will introduce randomness into the request process. see: https://github.com/prof-rossetti/georgetown-opim-243-201901/blob/master/notes/python/modules/random.md
+#print("SOME RANDOM MOVIE IDS:", movie_ids[0:7])
 
-    # for collection in range(genre_id):
-    #    data = requests.get("https://api.themoviedb.org/3/movie/" + str(genre_id) + f"?api_key={API_KEY_V3}")
+    # print(genre_id)
+
+        # for collection in range(genre_id):
+        #    data = requests.get("https://api.themoviedb.org/3/movie/" + str(genre_id) + f"?api_key={API_KEY_V3}")
 
 request_url = f"https://api.themoviedb.org/3/discover/movie?api_key={API_KEY_V3}&language=en-US&sort_by=popularity.desc&with_genres={genre_id}"
-# print(request_url)
+    # print(request_url)
 data = requests.get(request_url)
 
 if data.status_code == 200:
     json_string = data.text
     parsed_response = json.loads(json_string)
 
-    # breakpoint()
-    # (Pdb) type(parsed_response)
-    # <class 'dict'>
-    # (Pdb) parsed_response.keys()
-    # dict_keys(['page', 'total_results', 'total_pages', 'results'])
+        # breakpoint()
+        # (Pdb) type(parsed_response)
+        # <class 'dict'>
+        # (Pdb) parsed_response.keys()
+        # dict_keys(['page', 'total_results', 'total_pages', 'results'])
 
     matching_movies = parsed_response["results"]
 
-    # print(type(matching_movies))
+        # print(type(matching_movies))
 
     movie_list = []
 
 
-    # ENSURES THERE ARE ONLY 3 OUPUTS
+        # ENSURES THERE ARE ONLY 3 OUPUTS
 
     while len(movie_list) != output_length:
         random_int = random.randint(0, len(matching_movies) - 1)
         if matching_movies[random_int] not in movie_list:
             movie_list.append(matching_movies[random_int])
 
-  
-    # PRINTING PROCESS OF THE MOVIES 
+    
+        # PRINTING PROCESS OF THE MOVIES 
 
     print("-------------------")
-    print("Random " +  str(matching_genres[0]) + " movies: ")
+    print("Random " +  str(matching_genres[0]['name']) + " movies: ")
     for movie in movie_list:
-        pp.pprint(movie)    
-        print("---------")
+        print(movie['original_title'])
+        print(movie['overview'])  
+        print()
+    print("---------")
